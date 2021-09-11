@@ -18,10 +18,13 @@ from django.urls import path, include
 from rest_framework.documentation import include_docs_urls
 from rest_framework.schemas import get_schema_view
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('schema/', get_schema_view(title='BlogAPI', description='API for BlogAPI',
                                     version='1.0.0'), name='schema'),
     path('docs/', include_docs_urls(title='BlogAPI')),
-    path('api-user/', include('users.urls'))
+    path('api-user/', include('users.urls')),
+    path('products/', include('products.urls')),
+    path('api-auth/', include('rest_framework.urls', namespace='rest-framework'))
 ]
