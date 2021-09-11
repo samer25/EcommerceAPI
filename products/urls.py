@@ -1,9 +1,10 @@
 from django.urls import path
 
-from products.views import CategoryApiListView, CategoryApiCreateView, CategoryApiRetrieveView
+from products.views import CategoryViewSet
+from rest_framework.routers import DefaultRouter
 
-urlpatterns = [
-    path('category/', CategoryApiListView.as_view(), name='category'),
-    path('category/<slug:slug>/', CategoryApiRetrieveView.as_view(), name='category-retrieve'),
-    path('category/create/', CategoryApiCreateView.as_view(), name='category-create'),
-]
+router = DefaultRouter()
+router.register('category', CategoryViewSet, basename='user')
+urlpatterns = router.urls
+
+
