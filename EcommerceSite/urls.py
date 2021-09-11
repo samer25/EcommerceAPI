@@ -25,6 +25,6 @@ urlpatterns = [
                                     version='1.0.0'), name='schema'),
     path('docs/', include_docs_urls(title='BlogAPI')),
     path('api-user/', include('users.urls')),
-    path('products/', include('products.urls')),
+    path('api/', include('products.urls')),
     path('api-auth/', include('rest_framework.urls', namespace='rest-framework'))
 ]
