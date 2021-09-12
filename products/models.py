@@ -1,17 +1,23 @@
-import datetime
+from django.utils import timezone
 from io import BytesIO
 from PIL import Image
 from django.core.files import File
 from django.db import models
 
-
 # Create your models here.
+from social_core.utils import slugify
+
+
 class CategoryModel(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255)
 
     class Meta:
         ordering = ('name',)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.slug
@@ -28,14 +34,18 @@ class ProductModel(models.Model):
     image = models.ImageField(upload_to='products/', blank=True, null=True)
     thumbnail = models.ImageField(upload_to='products/thumbnail/', blank=True, null=True)
     price = models.DecimalField(decimal_places=2, max_digits=6)
-    slug = models.SlugField(max_length=255)
-    date_added = models.DateTimeField(datetime.datetime.now())
+    slug = models.SlugField(max_length=255, blank=True, null=True)
+    date_added = models.DateTimeField(timezone.now())
 
     class Meta:
         ordering = ['-date_added']
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         return f'/{self.category.slug}/{self.slug}/'
@@ -47,12 +57,12 @@ class ProductModel(models.Model):
 
     def get_thumbnail(self):
         if self.thumbnail:
-            return 'http://127.0.0.1:8000/' + self.thumbnail.url
+            return 'http://127.0.0.1:8000' + self.thumbnail.url
         else:
             if self.image:
                 self.thumbnail = self.make_thumbnail(self.image)
                 self.save()
-                return 'http://127.0.0.1:8000/' + self.thumbnail.url
+                return 'http://127.0.0.1:8000' + self.thumbnail.url
             else:
                 return ''
 

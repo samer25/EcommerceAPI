@@ -51,13 +51,13 @@ class ProductsDetail(APIView):
 def search_products(request):
     query = request.data.get('query', '')
     founded_data = []
+
     if query:
         query_list = query.split(" ")
 
         for query in query_list:
             product = ProductModel.objects.filter(Q(category__name__icontains=query) | Q(descriptions__icontains=query))
-            if product:
-                serializer = ProductSerializer(product, many=True)
-                founded_data += serializer.data
+            serializer = ProductSerializer(product, many=True)
+            founded_data += serializer.data
         return Response(founded_data, status=status.HTTP_200_OK)
     return Response(founded_data)
