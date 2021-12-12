@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'drf_social_oauth2',
 
     'products',
+    'order',
 ]
 
 MIDDLEWARE = [

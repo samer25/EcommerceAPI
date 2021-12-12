@@ -3,6 +3,12 @@ from users.models import UserProfile
 
 
 class TestModelUserProfile(TestCase):
+    def setUp(self):
+        UserProfile.objects.create_user(email='user@normal.com', username='normal-user',
+                                        first_name='first name', password='password')
+
+        UserProfile.objects.create_superuser(email='super@user.com', username='superuser',
+                                             first_name='first name', password='password')
 
     def test_model_user_profile_to_create_user_should_return_value_error(self):
         """Returns ValueError if email is not provided"""
@@ -12,29 +18,24 @@ class TestModelUserProfile(TestCase):
 
         """Returns ValueError if username provided"""
         with self.assertRaises(ValueError):
-            UserProfile.objects.create_user(email='a@dd.com', username=None,
+            UserProfile.objects.create_user(email='value@error.com', username=None,
                                             first_name='first name', password='password')
 
         """Returns ValueError if first name is not provided"""
         with self.assertRaises(ValueError):
-            UserProfile.objects.create_user(email='a@dd.com', username='username',
+            UserProfile.objects.create_user(email='value@error.com', username='username',
                                             first_name=None, password='password')
 
     def test_model_user_profile_to_create_user_should_return_true(self):
-        UserProfile.objects.create_user(email='a@dd.com', username='username',
-                                        first_name='first name', password='password')
-
-        self.assertTrue(UserProfile.objects.get(email='a@dd.com'))
+        self.assertTrue(UserProfile.objects.get(email='user@normal.com'))
 
     def test_model_user_profile_to_create_user_should_return_email_as_str(self):
-        UserProfile.objects.create_user(email='a@dd.com', username='username',
-                                        first_name='first name', password='password')
-        user = UserProfile.objects.get(email='a@dd.com')
-        self.assertEqual(str(user), 'a@dd.com')
+        user = UserProfile.objects.get(email='user@normal.com')
+        self.assertEqual(str(user), 'user@normal.com')
 
     def test_model_user_profile_to_create_superuser_should_return_value_error(self):
         """Checking if one of the other fields are False must return ValueError"""
-        email = 'b@a.com'
+        email = 'is@superuser.com'
         username = 'username'
         first_name = 'ssss'
         password = '12345'
@@ -51,7 +52,4 @@ class TestModelUserProfile(TestCase):
             other_fields[i] = True
 
     def test_model_user_profile_to_create_superuser_should_return_true(self):
-        UserProfile.objects.create_superuser(email='a@dd.com', username='username',
-                                             first_name='first name', password='password')
-
-        self.assertTrue(UserProfile.objects.get(email='a@dd.com'))
+        self.assertTrue(UserProfile.objects.get(email='super@user.com'))

@@ -26,5 +26,6 @@ urlpatterns = [
     path('docs/', include_docs_urls(title='BlogAPI')),
     path('api-user/', include('users.urls')),
     path('api/', include('products.urls')),
+    path('api/order/', include('order.urls')),
     path('api-auth/', include('rest_framework.urls', namespace='rest-framework'))
 ]

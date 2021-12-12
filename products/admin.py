@@ -13,7 +13,7 @@ class ProductAdminConfig(admin.ModelAdmin):
     list_display = ('title', 'price', 'availability', 'date_added')
     fieldsets = (
         ('Category', {'fields': ('category',)}),
-        ('Product Detail', {'fields': ('title', 'slug', 'descriptions', 'price', 'availability')}),
+        ('Product Detail', {'fields': ('title', 'slug', 'descriptions', 'price', 'discount_price', 'availability')}),
         ('Image', {'fields': ('image', 'thumbnail')}),
         ('Date Added', {'fields': ('date_added',)}),
 

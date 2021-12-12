@@ -3,8 +3,6 @@ from io import BytesIO
 from PIL import Image
 from django.core.files import File
 from django.db import models
-
-# Create your models here.
 from social_core.utils import slugify
 
 
@@ -34,6 +32,7 @@ class ProductModel(models.Model):
     image = models.ImageField(upload_to='products/', blank=True, null=True)
     thumbnail = models.ImageField(upload_to='products/thumbnail/', blank=True, null=True)
     price = models.DecimalField(decimal_places=2, max_digits=6)
+    discount_price = models.DecimalField(default=0, decimal_places=2, max_digits=6, null=True, blank=True)
     slug = models.SlugField(max_length=255, blank=True, null=True)
     date_added = models.DateTimeField(timezone.now())
 
